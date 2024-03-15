@@ -16,9 +16,27 @@ const addMeeting = (req,res) => {
         transporter.sendMail({
             from: 'abdulmannankhan1000@gmail.com',
             to: client,
-            subject: 'Meeting Scheduled',
-            text: `Your meeting has been scheduled from ${new Date(start).toLocaleDateString()} and time ${new Date(start).toLocaleTimeString()} to ${new Date(end).toLocaleDateString()} and time ${new Date(end).toLocaleTimeString()}`
-        }, function(error, info){
+            subject: 'Ftesë për Takim (Meeting Titel*)',
+            text: `Përshëndetje (Employee Name*),
+
+            Ju keni qenë caktuar për të marrë pjesë në këtë takim që është planifikuar me datë ${new Date(start).toLocaleDateString()} and time ${new Date(start).toLocaleTimeString()} . 
+
+           Ju lutemi të siguroheni që të jeni të pranishëm 5 min para kohës të caktuar.
+           
+           
+           Faleminderit dhe ju presim në takim.
+
+
+           Me respekt,
+           Gntc Group`
+           
+            
+            
+            
+            
+            
+            
+          
             if (error) {
                 console.log(error);
             } else {
