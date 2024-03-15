@@ -1,4 +1,4 @@
-const client = require('../models/Client');
+const client = require('../Models/Client');
 
 const addClient = (req,res) => {
     const {name,email,company,city} = req.body;

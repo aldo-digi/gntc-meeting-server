@@ -1,4 +1,4 @@
-const meeting = require('../models/Meeting');
+const meeting = require('../Models/Meeting');
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
