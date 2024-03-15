@@ -28,7 +28,7 @@ const addMeeting = (req,res) => {
 
 
            Me respekt,
-           Gntc Group
+           Gntc Group`
            
             
             
