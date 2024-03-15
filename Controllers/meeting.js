@@ -17,7 +17,7 @@ const addMeeting = (req,res) => {
             from: 'abdulmannankhan1000@gmail.com',
             to: client,
             subject: 'Meeting Scheduled',
-            text: `Your meeting has been scheduled from ${start.toLocaleDateString()} and time ${start.toLocaleTimeString()} to ${start.toLocaleDateString()} and time ${start.toLocaleTimeString()}`
+            text: `Your meeting has been scheduled from ${new Date(start).toLocaleDateString()} and time ${new Date(start).toLocaleTimeString()} to ${new Date(end).toLocaleDateString()} and time ${new Date(end).toLocaleTimeString()}`
         }, function(error, info){
             if (error) {
                 console.log(error);
