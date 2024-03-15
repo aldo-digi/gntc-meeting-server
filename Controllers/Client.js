@@ -1,8 +1,8 @@
 const client = require('../Models/Client');
 
 const addClient = (req,res) => {
-    const {name,email,company,city} = req.body;
-    const newClient = new  client({name,email,company,city});
+    const {name,email,company,city,phoneNumber} = req.body;
+    const newClient = new  client({name,email,company,city,phoneNumber});
     newClient.save().then((data)=> {
         res.json(data)
     }).catch((error)=>res.status(400).json('Error: '+error));
@@ -26,6 +26,7 @@ const updateClient = (req,res) => {
         client.email = req.body.email;
         client.company = req.body.company;
         client.city = req.body.city;
+        client.phoneNumber = req.body.phoneNumber;
         client.save().then((data)=>res.json(data)).catch((error)=>res.status(400).json('Error: '+error));
     }
     ).catch((error)=>res.status(400).json('Error: '+error));

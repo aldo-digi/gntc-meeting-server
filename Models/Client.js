@@ -17,6 +17,10 @@ const ClientSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    phoneNumber:{
+        type:String,
+        required:true
+    }
 })
 
 const Client = mongoose.model('Client',ClientSchema);
