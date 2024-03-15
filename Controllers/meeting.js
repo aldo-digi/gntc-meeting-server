@@ -1,9 +1,32 @@
 const meeting = require('../models/Meeting');
 
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'abdulmannankhan1000@gmail.com',
+        pass: 'tejd rrxm ezzl ctwf'
+    }
+});
+
 const addMeeting = (req,res) => {
     const {client,start,end,color,event_id} = req.body;
     const newMeeting = new  meeting({client,start,end,color,event_id});
-    newMeeting.save().then(()=>res.json('Meeting added')).catch((error)=>res.status(400).json('Error: '+error));
+    newMeeting.save().then(()=> {
+        transporter.sendMail({
+            from: 'abdulmannankhan1000@gmail.com',
+            to: client,
+            subject: 'Meeting Scheduled',
+            text: `Meeting Scheduled from ${start} to ${end}`
+        }, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        }
+        );
+        res.json('Meeting added')
+    }).catch((error)=>res.status(400).json('Error: '+error));
 }
 
 const getMeetings = (req,res) => {
