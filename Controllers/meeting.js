@@ -1,6 +1,7 @@
 const meeting = require('../Models/Meeting');
+const {createTransport} = require("nodemailer");
 
-var transporter = nodemailer.createTransport({
+var transporter = createTransport({
     service: 'gmail',
     auth: {
         user: 'abdulmannankhan1000@gmail.com',
