@@ -5,19 +5,11 @@ const ClientSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    firstName:{
+    name:{
         type:String,
         required:true,
     },
-    lastName:{
-        type:String,
-        required:true
-    },
-    gender:{
-        type:String,
-        required:true,
-    },
-    position:{
+    company:{
       type:String,
       required:true,
     },
@@ -25,11 +17,6 @@ const ClientSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    meetings:{
-        type:Array,
-        required:true,
-        default:[],
-    }
 })
 
 const Client = mongoose.model('Client',ClientSchema);

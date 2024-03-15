@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const MeetingSchema = new mongoose.Schema({
     client:{
@@ -10,6 +10,14 @@ const MeetingSchema = new mongoose.Schema({
         required:true
     },
     end:{
+        type:String,
+        required:true
+    },
+    color:{
+        type:String,
+        required:true
+    },
+    event_id:{
         type:String,
         required:true
     }

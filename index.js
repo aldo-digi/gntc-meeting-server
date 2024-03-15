@@ -12,18 +12,17 @@ app.use(express.urlencoded({extended: true}))
 dotenv.config();
 
 const clientRoutes = require('./Routes/Client');
-app.use('/client', clientRoutes);
+app.use('/clients', clientRoutes);
 const meetingRoutes = require('./Routes/Meeting');
-app.use('/meeting', meetingRoutes);
+app.use('/meetings', meetingRoutes);
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log(`App Listening at Port ${port}`)
 })
 
-const DB = "mongodb+srv://Khizer:khizer1120@geez-database.rlvazjq.mongodb.net/retryWrites=true&w=majority"
 
-mongoose.connect(DB, {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => console.log("Database connected"))
