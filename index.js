@@ -15,6 +15,8 @@ const clientRoutes = require('./Routes/Client');
 app.use('/clients', clientRoutes);
 const meetingRoutes = require('./Routes/Meeting');
 app.use('/meetings', meetingRoutes);
+const userRoutes = require('./Routes/User');
+app.use('/user', userRoutes);
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
