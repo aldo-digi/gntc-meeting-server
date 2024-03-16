@@ -10,39 +10,22 @@ var transporter = createTransport({
 });
 
 const addMeeting = (req,res) => {
-    const {client,start,end,color,event_id} = req.body;
-    const newMeeting = new  meeting({client,start,end,color,event_id});
+    const {clients,start,end,color,event_id} = req.body;
+    const newMeeting = new  meeting({clients,start,end,color,event_id});
     newMeeting.save().then(()=> {
-        transporter.sendMail({
-            from: 'abdulmannankhan1000@gmail.com',
-            to: client,
-            subject: 'Ftesë për Takim (Meeting Titel*)',
-            text: `Përshëndetje (Employee Name*),
-
-            Ju keni qenë caktuar për të marrë pjesë në këtë takim që është planifikuar me datë ${new Date(start).toLocaleDateString()} and time ${new Date(start).toLocaleTimeString()} . 
-
-           Ju lutemi të siguroheni që të jeni të pranishëm 5 min para kohës të caktuar.
-           
-           
-           Faleminderit dhe ju presim në takim.
-
-
-           Me respekt,
-           Gntc Group`
-           
-            
-            
-            
-            
-            
-            
-          
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
+        clients.forEach(client => {
+                transporter.sendMail({
+                    from: 'abdulmannankhan1000@gmail.com',
+                    to: clients[0],
+                    subject: 'Ftesë për Takim (Meeting Titel*)',
+                    html: `<h1>Dear ${client},</h1><p>You have been invited to a meeting on ${new Date(start).toLocaleDateString()} and time ${new Date(start).toLocaleTimeString()} to  ${new Date(end).toLocaleDateString()} and time ${new Date(end).toLocaleTimeString()}.</p>`
+                })  .then(function (info) {
+                    console.log(info);
+                }).catch(function (error) {
+                    console.log(error);
+                })
         }
+
         );
         res.json('Meeting added')
     }).catch((error)=>res.status(400).json('Error: '+error));
@@ -62,7 +45,7 @@ const deleteMeeting = (req,res) => {
 
 const updateMeeting = (req,res) => {
     meeting.findById(req.params.id).then((meeting)=>{
-        meeting.client = req.body.client;
+        meeting.clients = req.body.clients;
         meeting.start = req.body.start;
         meeting.end = req.body.end;
         meeting.color = req.body.color;

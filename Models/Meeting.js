@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
 const MeetingSchema = new mongoose.Schema({
-    client:{
-        type:String,
-        required:true
+    clients:{
+        type:Array,
+        required:true,
+        default:[]
     },
     start:{
         type:String,
