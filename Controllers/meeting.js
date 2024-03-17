@@ -18,7 +18,18 @@ const addMeeting = (req,res) => {
                     from: 'abdulmannankhan1000@gmail.com',
                     to: clients[0],
                     subject: 'Ftesë për Takim (Meeting Titel*)',
-                    html: `<h1>Dear ${client},</h1><p>You have been invited to a meeting on ${new Date(start).toLocaleDateString()} and time ${new Date(start).toLocaleTimeString()} to  ${new Date(end).toLocaleDateString()} and time ${new Date(end).toLocaleTimeString()}.</p>`
+                    html: `<h1>Përshëndetje ${client},</h1><p>
+
+            Ju keni qenë caktuar për të marrë pjesë në këtë takim që është planifikuar për from ${new Date(start).toLocaleDateString()} and time ${new Date(start).toLocaleTimeString()} . 
+
+            Ju lutemi të siguroheni që të jeni të pranishëm 5 min para kohës të caktuar.
+           
+           
+           Faleminderit dhe ju presim në takim.
+
+
+           Me respekt,
+           Gntc Group</p>`
                 })  .then(function (info) {
                     console.log(info);
                 }).catch(function (error) {
