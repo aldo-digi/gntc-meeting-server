@@ -10,14 +10,14 @@ var transporter = createTransport({
 });
 
 const addMeeting = (req,res) => {
-    const {clients,start,end,color,event_id} = req.body;
-    const newMeeting = new  meeting({clients,start,end,color,event_id});
+    const {clients,start,end,color,event_id,title} = req.body;
+    const newMeeting = new  meeting({clients,start,end,color,event_id,title});
     newMeeting.save().then(()=> {
         clients.forEach(client => {
                 transporter.sendMail({
                     from: 'abdulmannankhan1000@gmail.com',
                     to: clients[0],
-                    subject: 'Ftesë për Takim (Meeting Titel*)',
+                    subject: `${title}`,
                     html: `<h1>Përshëndetje ${client},</h1><p>
 Ju jeni caktuar për të marrë pjesë në këtë takim që është planifikuar me datën ${new Date(start).toLocaleDateString()} në ora ${new Date(start).toLocaleTimeString()}.<br /><br />
 Ju lutemi të siguroheni që të jeni të pranishëm 5 min para kohës të caktuar.<br /><br />
@@ -55,6 +55,7 @@ const updateMeeting = (req,res) => {
         meeting.end = req.body.end;
         meeting.color = req.body.color;
         meeting.event_id = req.body.event_id;
+        meeting.title = req.body.title
         meeting.save().then(()=>res.json('Meeting updated')).catch((error)=>res.status(400).json('Error: '+error));
     }
     ).catch((error)=>res.status(400).json('Error: '+error));

@@ -21,6 +21,10 @@ const MeetingSchema = new mongoose.Schema({
     event_id:{
         type:String,
         required:true
+    },
+    title:{
+        type:String,
+        required:true
     }
 })
 
