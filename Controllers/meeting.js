@@ -61,4 +61,20 @@ const updateMeeting = (req,res) => {
     ).catch((error)=>res.status(400).json('Error: '+error));
 }
 
-module.exports = {addMeeting, getMeetings, getMeeting, deleteMeeting, updateMeeting};
+const approveMeeting = (req,res) => {
+    meeting.findById(req.params.id).then((meeting)=>{
+            meeting.approve = 'true'
+            meeting.save().then(()=>res.json('Meeting updated')).catch((error)=>res.status(400).json('Error: '+error));
+        }
+    ).catch((error)=>res.status(400).json('Error: '+error));
+}
+
+const disApproveMeeting = (req,res) => {
+    meeting.findById(req.params.id).then((meeting)=>{
+            meeting.approve = 'false'
+            meeting.save().then(()=>res.json('Meeting updated')).catch((error)=>res.status(400).json('Error: '+error));
+        }
+    ).catch((error)=>res.status(400).json('Error: '+error));
+}
+
+module.exports = {addMeeting, getMeetings, getMeeting, deleteMeeting, updateMeeting,approveMeeting,disApproveMeeting};

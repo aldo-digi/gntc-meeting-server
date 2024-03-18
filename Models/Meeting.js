@@ -25,6 +25,11 @@ const MeetingSchema = new mongoose.Schema({
     title:{
         type:String,
         required:true
+    },
+    approve:{
+        type:String,
+        required:true,
+        default:'none'
     }
 })
 
