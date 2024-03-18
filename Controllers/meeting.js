@@ -22,7 +22,7 @@ const addMeeting = (req,res) => {
 Ju jeni caktuar për të marrë pjesë në këtë takim që është planifikuar me datën ${new Date(start).toLocaleDateString()} në ora ${new Date(start).toLocaleTimeString()}.<br /><br />
 Ju lutemi të siguroheni që të jeni të pranishëm 5 min para kohës të caktuar.<br /><br />
 Faleminderit dhe ju presim në takim.<br /><br />
-Me respekt,
+Me respekt,<br /><br />
 Gntc Group</p>`
                 })  .then(function (info) {
                     console.log(info);
