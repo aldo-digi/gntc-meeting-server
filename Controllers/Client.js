@@ -13,7 +13,7 @@ const getClients = (req,res) => {
 }
 
 const getClient = (req,res) => {
-    client.findById(req.params.id).then((client)=>res.json(client)).catch((error)=>res.status(400).json('Error: '+error));
+    client.findOne({email:req.params.email}).then((client)=>res.json(client)).catch((error)=>res.status(400).json('Error: '+error));
 }
 
 const deleteClient = (req,res) => {

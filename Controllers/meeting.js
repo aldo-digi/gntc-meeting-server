@@ -10,8 +10,8 @@ var transporter = createTransport({
 });
 
 const addMeeting = (req,res) => {
-    const {clients,start,end,color,event_id,title} = req.body;
-    const newMeeting = new  meeting({clients,start,end,color,event_id,title});
+    const {clients,start,end,color,event_id,title,createdBy} = req.body;
+    const newMeeting = new  meeting({clients,start,end,color,event_id,title,createdBy});
     newMeeting.save().then(()=> {
         clients.forEach(client => {
                 transporter.sendMail({
@@ -56,6 +56,7 @@ const updateMeeting = (req,res) => {
         meeting.color = req.body.color;
         meeting.event_id = req.body.event_id;
         meeting.title = req.body.title
+        meeting.editedBy = req.body.editedBy;
         meeting.save().then(()=>res.json('Meeting updated')).catch((error)=>res.status(400).json('Error: '+error));
     }
     ).catch((error)=>res.status(400).json('Error: '+error));

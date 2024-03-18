@@ -30,6 +30,12 @@ const MeetingSchema = new mongoose.Schema({
         type:String,
         required:true,
         default:'none'
+    },
+    createdBy:{
+        type:String,
+    },
+    editedBy:{
+        type:String,
     }
 })
 

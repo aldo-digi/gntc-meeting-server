@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/add', addClient);
 router.get('/get', getClients);
-router.get('/get/:id', getClient);
+router.get('/get/:email', getClient);
 router.delete('/delete/:id', deleteClient);
 router.post('/update/:id', updateClient);
 
