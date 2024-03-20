@@ -8,8 +8,8 @@ function sendEmail(hostEmail, hostPassword) {
         port: 587, // Replace with your SMTP port (often 587 or 465)
         secure: false, // true for 465, false for other ports
         auth: {
-            user: "takime@gntc-ks.com", // Replace with the host's email
-            pass: "Tako.7899" // Replace with the host's email password
+            user: takime@gntc-ks.com, // Replace with the host's email
+            pass: Tako.7899 // Replace with the host's email password
         }
     });
 
