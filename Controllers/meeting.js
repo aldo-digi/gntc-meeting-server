@@ -1,13 +1,17 @@
 const meeting = require('../Models/Meeting');
 const {createTransport} = require("nodemailer");
 
-var transporter = createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'abdulmannankhan1000@gmail.com',
-        pass: 'tejd rrxm ezzl ctwf'
-    }
-});
+
+function sendEmail(hostEmail, hostPassword) {
+    var transporter = createTransport({
+        host: 'mail.gntc-ks.com', // Replace with your SMTP server host
+        port: 587, // Replace with your SMTP port (often 587 or 465)
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: "takime@gntc-ks.com", // Replace with the host's email
+            pass: "Tako.7899" // Replace with the host's email password
+        }
+    });
 
 const addMeeting = (req,res) => {
     const {clients,start,end,color,event_id,title,createdBy} = req.body;
@@ -15,7 +19,7 @@ const addMeeting = (req,res) => {
     newMeeting.save().then(()=> {
         clients.forEach(client => {
                 transporter.sendMail({
-                    from: 'abdulmannankhan1000@gmail.com',
+                    from: 'takime@gntc-ks.com',
                     to: clients[0],
                     subject: `${title}`,
                     html: `<h1 style="font-size: 20px;">Përshëndetje ${client},</h1><p style="font-size: 18px;">
