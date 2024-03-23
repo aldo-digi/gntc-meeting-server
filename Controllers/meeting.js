@@ -1,13 +1,14 @@
 const meeting = require('../Models/Meeting');
 const {createTransport} = require("nodemailer");
 
+
 var transporter = createTransport({
     host: 'mail.gntc-ks.com',
-    port: 587,
-    secure: false,
+    port: 465,
+    secure: true,
     auth: {
         user: 'takime@gntc-ks.com',
-        pass: 'Tako.7899'
+        pass: 'Calendari2024'
     },
 });
 
