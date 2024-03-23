@@ -4,8 +4,8 @@ const {createTransport} = require("nodemailer");
 
 var transporter = createTransport({
     host: 'mail.gntc-ks.com',
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false,
     auth: {
         user: 'takime@gntc-ks.com',
         pass: 'Calendari2024'
