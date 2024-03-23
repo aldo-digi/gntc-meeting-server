@@ -1,16 +1,27 @@
-const meeting = require('../Models/Meeting');
-const {createTransport} = require("nodemailer");
+const meetingModel = require('../Models/Meeting');
+const { createTransport } = require("nodemailer");
 
+// Environment variables for sensitive data
+const { EMAIL_USER, EMAIL_PASS } = process.env;
 
-var transporter = createTransport({
+if (!EMAIL_USER || !EMAIL_PASS) {
+    console.error("Email credentials are missing.");
+    process.exit(1); // Exit the process if credentials are missing
+}
+
+const transporter = createTransport({
     host: 'mail.gntc-ks.com',
-    port: 587,
-    secure: false,
+    port: 465,
+    secure: true,
     auth: {
-        user: 'takime@gntc-ks.com',
+       user: 'takime@gntc-ks.com',
         pass: 'Calendari2024'
-    },
+    }
 });
+
+// Example usage:
+// transporter.sendMail({ ... }, (error, info) => { ... });
+
 
 
 const addMeeting = (req, res) => {
