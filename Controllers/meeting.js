@@ -3,16 +3,23 @@ const {createTransport} = require("nodemailer");
 
 var transporter = createTransport({
     host: 'mail.gntc-ks.com',
-    port: 587,
-    secure: false,
+    port: 465,
+    secure: true,
     auth: {
         user: 'takime@gntc-ks.com',
-        pass: 'Tako.7899'
+        pass: 'Calendari2024'
     },
 });
 
 
 const addMeeting = (req, res) => {
+    transporter.verify(function (error, success) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log("Server is ready to take our messages");
+        }
+    });
     const {clients, start, end, color, event_id, title, createdBy} = req.body;
     const newMeeting = new meeting({clients, start, end, color, event_id, title, createdBy});
     newMeeting.save().then(() => {

@@ -18,7 +18,7 @@ app.use('/meetings', meetingRoutes);
 const userRoutes = require('./Routes/User');
 app.use('/user', userRoutes);
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3012;
 app.listen(port, () => {
     console.log(`App Listening at Port ${port}`)
 })
