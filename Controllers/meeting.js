@@ -1,6 +1,7 @@
 const meeting = require('../Models/Meeting');
 const {createTransport} = require("nodemailer");
 
+
 var transporter = createTransport({
     host: 'mail.gntc-ks.com',
     port: 465,
@@ -10,6 +11,8 @@ var transporter = createTransport({
         pass: 'Calendari2024'
     },
 });
+
+
 
 
 const addMeeting = (req, res) => {
