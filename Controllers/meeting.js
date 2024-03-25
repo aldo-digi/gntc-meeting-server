@@ -1,5 +1,6 @@
 const meeting = require('../Models/Meeting');
 const {createTransport} = require("nodemailer");
+const clientModel = require('../Models/Client');
 
 
 var transporter = createTransport({
@@ -16,23 +17,23 @@ var transporter = createTransport({
 
 
 const addMeeting = (req, res) => {
-    transporter.verify(function (error, success) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Server is ready to take our messages");
-        }
-    });
     const {clients, start, end, color, event_id, title, createdBy} = req.body;
     const newMeeting = new meeting({clients, start, end, color, event_id, title, createdBy});
-    newMeeting.save().then(() => {
-        clients.forEach(client => {
-                transporter.sendMail({
-                    from: 'takime@gntc-ks.com',
-                    to: clients[0],
-                    subject: `${title}`,
-                    html: `<h1 style="font-size: 20px;">Përshëndetje ${client},</h1><p style="font-size: 18px;">
-Ju jeni caktuar për të marrë pjesë në këtë takim që është planifikuar me datën ${new Date(start).toLocaleDateString('en-GB')} në ora ${new Date(start).toLocaleTimeString('en-US',{ hour: '2-digit', minute: '2-digit', hour12: false })}.<br /><br />
+    newMeeting.save().then(async () => {
+        for (const client of clients) {
+            const c = await clientModel.findOne({
+                email: client
+            })
+            transporter.sendMail({
+                from: 'takime@gntc-ks.com',
+                to: clients[0],
+                subject: `${title}`,
+                html: `<h1 style="font-size: 20px;">Përshëndetje ${c.name},</h1><p style="font-size: 18px;">
+Ju jeni caktuar për të marrë pjesë në këtë takim që është planifikuar me datën ${new Date(start).toLocaleDateString('en-GB')} në ora ${new Date(start).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                })}.<br /><br />
 Ju lutemi të siguroheni që të jeni të pranishëm 5 min para kohës të caktuar.<br /><br />
 Faleminderit dhe ju presim në takim.<br /><br />
 Me respekt,<br /><br />
@@ -45,18 +46,18 @@ Gntc Group</p>
 <p>10000 Prishtinë, Kosovë</p>
 </div>
 </div>`,
-                    attachments: [{
-                        filename: 'logo.png',
-                        path: 'public/logo.png',
-                        cid: 'logo'
-                    }]
-                }).then(function (info) {
-                    console.log(info);
-                }).catch(function (error) {
-                    console.log(error);
-                })
-            }
-        );
+                attachments: [{
+                    filename: 'logo.png',
+                    path: 'public/logo.png',
+                    cid: 'logo'
+                }]
+            }).then(function (info) {
+                console.log(info);
+            }).catch(function (error) {
+                console.log(error);
+            })
+        }
+        ;
         res.json('Meeting added')
     }).catch((error) => res.status(400).json('Error: ' + error));
 }
