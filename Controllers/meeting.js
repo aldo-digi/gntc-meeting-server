@@ -46,8 +46,8 @@ Gntc Group</p>
 </div>
 </div>`,
                     attachments: [{
-                        filename: 'Logo.png',
-                        path: '/logo.png',
+                        filename: 'logo.png',
+                        path: 'public/logo.png',
                         cid: 'logo'
                     }]
                 }).then(function (info) {
