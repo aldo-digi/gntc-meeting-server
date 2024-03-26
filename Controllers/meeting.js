@@ -26,7 +26,7 @@ const addMeeting = (req, res) => {
             })
             transporter.sendMail({
                 from: 'takime@gntc-ks.com',
-                to: clients[0],
+                to: client,
                 subject: `${title}`,
                 html: `<h1 style="font-size: 20px;">Përshëndetje ${c.name},</h1><p style="font-size: 18px;">
 Ju jeni caktuar për të marrë pjesë në këtë takim që është planifikuar me datën ${new Date(start).toLocaleDateString('en-GB')} në ora ${new Date(start).toLocaleTimeString('en-US', {
