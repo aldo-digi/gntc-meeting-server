@@ -63,6 +63,9 @@ const addMeeting = (req, res) => {
     const {clients, start, end, color, event_id, title, createdBy} = req.body;
     const newMeeting = new meeting({clients, start, end, color, event_id, title, createdBy});
     const newHisMeeting = new meetingHis({clients, start, end, color, event_id, title, createdBy});
+    newHisMeeting.save().then(() => {
+        console.log('Meeting added to history')
+    }).catch((error) => res.status(400).json('Error: ' + error));
     newMeeting.save().then(async () => {
         res.json('Meeting added')
     }).catch((error) => res.status(400).json('Error: ' + error));
