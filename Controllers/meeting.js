@@ -20,6 +20,7 @@ const addMeeting = (req, res) => {
     const {clients, start, end, color, event_id, title, createdBy} = req.body;
     const newMeeting = new meeting({clients, start, end, color, event_id, title, createdBy});
     console.log(new Date(start).toLocaleTimeString('en-GB', {
+        timeZone: 'GMT',
         hour: '2-digit',
         minute: '2-digit',
         hour12: false
