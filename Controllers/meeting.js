@@ -1,4 +1,5 @@
 const meeting = require('../Models/Meeting');
+const meetingHis = require('../Models/MeetingHistory');
 const {createTransport} = require("nodemailer");
 const clientModel = require('../Models/Client');
 
@@ -14,33 +15,25 @@ var transporter = createTransport({
 });
 
 
-
-
-const addMeeting = (req, res) => {
-    const {clients, start, end, color, event_id, title, createdBy} = req.body;
-    const newMeeting = new meeting({clients, start, end, color, event_id, title, createdBy});
-    console.log(new Date(start).toLocaleTimeString('en-US', {
-        timeZone: 'CET',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    }))
-    newMeeting.save().then(async () => {
-        for (const client of clients) {
-            const c = await clientModel.findOne({
-                email: client
-            })
-            transporter.sendMail({
-                from: 'takime@gntc-ks.com',
-                to: client,
-                subject: `${title}`,
-                html: `<h1 style="font-size: 20px;">Përshëndetje ${c.name},</h1><p style="font-size: 18px;">
+const sendEmail = async (req, res) => {
+    const meetingId = req.body;
+    const meetingg = await meeting.findById(meetingId.id);
+    const {clients, start, title} = meetingg;
+    for (const client of clients) {
+        const c = await clientModel.findOne({
+            email: client
+        })
+        transporter.sendMail({
+            from: 'takime@gntc-ks.com',
+            to: client,
+            subject: `${title}`,
+            html: `<h1 style="font-size: 20px;">Përshëndetje ${c.name},</h1><p style="font-size: 18px;">
 Ju jeni caktuar për të marrë pjesë në këtë takim që është planifikuar me datën ${new Date(start).toLocaleDateString('en-GB')} në ora ${new Date(start).toLocaleTimeString('en-GB', {
-                    timeZone: 'CET',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                })}.<br /><br />
+                timeZone: 'CET',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            })}.<br /><br />
 Ju lutemi të siguroheni që të jeni të pranishëm 5 min para kohës të caktuar.<br /><br />
 Faleminderit dhe ju presim në takim.<br /><br />
 Me respekt,<br /><br />
@@ -53,24 +46,34 @@ Gntc Group</p>
 <p>10000 Prishtinë, Kosovë</p>
 </div>
 </div>`,
-                attachments: [{
-                    filename: 'logo.png',
-                    path: 'public/logo.png',
-                    cid: 'logo'
-                }]
-            }).then(function (info) {
-                console.log(info);
-            }).catch(function (error) {
-                console.log(error);
-            })
-        }
-        ;
+            attachments: [{
+                filename: 'logo.png',
+                path: 'public/logo.png',
+                cid: 'logo'
+            }]
+        }).then(function (info) {
+            console.log(info);
+        }).catch(function (error) {
+            console.log(error);
+        })
+    }
+}
+
+const addMeeting = (req, res) => {
+    const {clients, start, end, color, event_id, title, createdBy} = req.body;
+    const newMeeting = new meeting({clients, start, end, color, event_id, title, createdBy});
+    const newHisMeeting = new meetingHis({clients, start, end, color, event_id, title, createdBy});
+    newMeeting.save().then(async () => {
         res.json('Meeting added')
     }).catch((error) => res.status(400).json('Error: ' + error));
 }
 
 const getMeetings = (req, res) => {
     meeting.find().then((meetings) => res.json(meetings)).catch((error) => res.status(400).json('Error: ' + error));
+}
+
+const getHistoryMeetings = (req, res) => {
+    meetingHis.find().then((meetings) => res.json(meetings)).catch((error) => res.status(400).json('Error: ' + error));
 }
 
 const getMeeting = (req, res) => {
@@ -93,6 +96,16 @@ const updateMeeting = (req, res) => {
             meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
         }
     ).catch((error) => res.status(400).json('Error: ' + error));
+    meetingHis.findById(req.params.id).then((meeting) => {
+        meeting.clients = req.body.clients;
+        meeting.start = req.body.start;
+        meeting.end = req.body.end;
+        meeting.color = req.body.color;
+        meeting.event_id = req.body.event_id;
+        meeting.title = req.body.title
+        meeting.editedBy = req.body.editedBy;
+        meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
+    }).catch((error) => res.status(400).json('Error: ' + error));
 }
 
 const approveMeeting = (req, res) => {
@@ -101,6 +114,10 @@ const approveMeeting = (req, res) => {
             meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
         }
     ).catch((error) => res.status(400).json('Error: ' + error));
+    meetingHis.findById(req.params.id).then((meeting) => {
+        meeting.approve = 'true'
+        meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
+    }).catch((error) => res.status(400).json('Error: ' + error));
 }
 
 const disApproveMeeting = (req, res) => {
@@ -109,6 +126,20 @@ const disApproveMeeting = (req, res) => {
             meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
         }
     ).catch((error) => res.status(400).json('Error: ' + error));
+    meetingHis.findById(req.params.id).then((meeting) => {
+        meeting.approve = 'false'
+        meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
+    }).catch((error) => res.status(400).json('Error: ' + error));
 }
 
-module.exports = {addMeeting, getMeetings, getMeeting, deleteMeeting, updateMeeting, approveMeeting, disApproveMeeting};
+module.exports = {
+    getHistoryMeetings,
+    sendEmail,
+    addMeeting,
+    getMeetings,
+    getMeeting,
+    deleteMeeting,
+    updateMeeting,
+    approveMeeting,
+    disApproveMeeting
+};
