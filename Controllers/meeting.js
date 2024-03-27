@@ -19,6 +19,11 @@ var transporter = createTransport({
 const addMeeting = (req, res) => {
     const {clients, start, end, color, event_id, title, createdBy} = req.body;
     const newMeeting = new meeting({clients, start, end, color, event_id, title, createdBy});
+    console.log(new Date(start).toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    }))
     newMeeting.save().then(async () => {
         for (const client of clients) {
             const c = await clientModel.findOne({
@@ -29,7 +34,7 @@ const addMeeting = (req, res) => {
                 to: client,
                 subject: `${title}`,
                 html: `<h1 style="font-size: 20px;">Përshëndetje ${c.name},</h1><p style="font-size: 18px;">
-Ju jeni caktuar për të marrë pjesë në këtë takim që është planifikuar me datën ${new Date(start).toLocaleDateString('en-GB')} në ora ${new Date(start).toLocaleTimeString('en-US', {
+Ju jeni caktuar për të marrë pjesë në këtë takim që është planifikuar me datën ${new Date(start).toLocaleDateString('en-GB')} në ora ${new Date(start).toLocaleTimeString('en-GB', {
                     hour: '2-digit',
                     minute: '2-digit',
                     hour12: false
