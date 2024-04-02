@@ -88,26 +88,21 @@ const deleteMeeting = (req, res) => {
 }
 
 const updateMeeting = (req, res) => {
+    const {clients, start, end, color, event_id, title, editedBy} = req.body;
     meeting.findById(req.params.id).then((meeting) => {
-            meeting.clients = req.body.clients;
-            meeting.start = req.body.start;
-            meeting.end = req.body.end;
-            meeting.color = req.body.color;
-            meeting.event_id = req.body.event_id;
-            meeting.title = req.body.title
-            meeting.editedBy = req.body.editedBy;
-            meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
-        }
-    ).catch((error) => res.status(400).json('Error: ' + error));
-    meetingHis.findById(req.params.id).then((meeting) => {
-        meeting.clients = req.body.clients;
-        meeting.start = req.body.start;
-        meeting.end = req.body.end;
-        meeting.color = req.body.color;
-        meeting.event_id = req.body.event_id;
-        meeting.title = req.body.title
-        meeting.editedBy = req.body.editedBy;
-        meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
+        meeting.clients = clients;
+        meeting.start = start;
+        meeting.end = end;
+        meeting.color = color;
+        meeting.event_id = event_id;
+        meeting.title = title;
+        meeting.editedBy = editedBy;
+        meeting.save().then((data) => {
+            meetingHis.findByIdAndUpdate(req.params.id, data).then(() => {
+                console.log('Meeting updated in history')
+            }).catch((error) => res.status(400).json('Error: ' + error));
+            res.json('Meeting updated')
+        }).catch((error) => res.status(400).json('Error: ' + error));
     }).catch((error) => res.status(400).json('Error: ' + error));
 }
 
