@@ -66,8 +66,8 @@ const addMeeting = (req, res) => {
     newHisMeeting.save().then(() => {
         console.log('Meeting added to history')
     }).catch((error) => res.status(400).json('Error: ' + error));
-    newMeeting.save().then(async () => {
-        res.json('Meeting added')
+    newMeeting.save().then(async (data) => {
+        res.json(data);
     }).catch((error) => res.status(400).json('Error: ' + error));
 }
 
@@ -109,25 +109,26 @@ const updateMeeting = (req, res) => {
 const approveMeeting = (req, res) => {
     meeting.findById(req.params.id).then((meeting) => {
             meeting.approve = 'true'
-            meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
+            meeting.save().then((data) => {
+                meetingHis.findByIdAndUpdate(req.params.id, data).then(() => {
+                    console.log('Meeting updated in history')
+                }).catch((error) => res.status(400).json('Error: ' + error));
+                res.json('Meeting updated')
+            }).catch((error) => res.status(400).json('Error: ' + error));
         }
     ).catch((error) => res.status(400).json('Error: ' + error));
-    meetingHis.findById(req.params.id).then((meeting) => {
-        meeting.approve = 'true'
-        meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
-    }).catch((error) => res.status(400).json('Error: ' + error));
 }
 
 const disApproveMeeting = (req, res) => {
     meeting.findById(req.params.id).then((meeting) => {
             meeting.approve = 'false'
-            meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
+            meeting.save().then((data) => {
+                meetingHis.findByIdAndUpdate(req.params.id, data).then(() => {
+                    console.log('Meeting updated in history')
+                }).catch((error) => res.status(400).json('Error: ' + error));
+            }).catch((error) => res.status(400).json('Error: ' + error));
         }
     ).catch((error) => res.status(400).json('Error: ' + error));
-    meetingHis.findById(req.params.id).then((meeting) => {
-        meeting.approve = 'false'
-        meeting.save().then(() => res.json('Meeting updated')).catch((error) => res.status(400).json('Error: ' + error));
-    }).catch((error) => res.status(400).json('Error: ' + error));
 }
 
 module.exports = {
